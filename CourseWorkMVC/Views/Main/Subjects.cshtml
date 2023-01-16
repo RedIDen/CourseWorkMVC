@@ -1,0 +1,33 @@
+﻿@model IEnumerable<CourseWorkMVC.Models.Subject>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Мои предметы</h1>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>
+                Предмет
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a class="btn btn-dark" asp-action="Marks" asp-route-id="@item.Id">Мои оценки</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

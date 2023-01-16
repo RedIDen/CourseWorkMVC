@@ -1,0 +1,72 @@
+﻿@model CourseWorkMVC.Models.Group
+
+@{
+    int count = 1;
+    int subjectsCount = 1;
+    ViewData["Title"] = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Группа
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Специальность
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Major.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Дата начала учёбы
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string date = Model.BeginDate.ToString("dd/MM/yyyy");
+            }
+            @Html.DisplayFor(modelItem => date)
+        </dd>
+        <div style="display: flex">
+            <div>
+                <dt class="col-sm-2">
+                    Студенты
+                </dt>
+                <dd>
+                    @foreach (var student in Model.Students)
+                    {
+                        string studentRow = $"{count++}) {student.LastName} {student.FirstName} {student.SurName}";
+                        <p style="margin: 0">
+                            @studentRow
+                        </p>
+                    }
+                </dd>
+            </div>
+            <div style="margin-left: 100px">
+                <dt class="col-sm-2">
+                Предметы
+            </dt>
+            <dd>
+                @foreach (var subject in Model.Major.Subjects)
+                {
+                    string subjectRow = $"{subjectsCount++}) {subject.Name}";
+                    <div style="display: flex; justify-content: space-between; width: 120%">
+                        <p style="margin: 0">
+                            @subjectRow
+                        </p>
+                        <a class="" asp-action="Marks" asp-route-id="@subject.Id">Оценки</a>
+                    </div>
+                }
+            </dd>
+            </div>
+        </div>
+    </dl>
+</div>
+<div>
+    <a class="btn btn-dark" asp-action="Index">Список групп</a>
+</div>

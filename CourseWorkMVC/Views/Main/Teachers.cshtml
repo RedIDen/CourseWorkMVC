@@ -1,0 +1,44 @@
+﻿@using CourseWorkMVC.Data
+@model IEnumerable<CourseWorkMVC.Models.Account>
+
+@{
+    string myStyle = string.Empty;
+    DateOnly previous = new DateOnly();
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Преподаватели</h1>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Электронная почта
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayFor(modelItem => item.SurName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a class="btn btn-dark" asp-action="TeachersLessons" asp-route-id="@item.Id">Расписание преподавателя</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

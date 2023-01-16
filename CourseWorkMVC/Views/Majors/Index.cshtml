@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CourseWorkMVC.Models.Major>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Специальности</h1>
+
+<p class="mt-3">
+    <a asp-action="Create" class="btn btn-dark ">Добавить</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Специальность
+        </th>
+        <th>
+            Предметы
+        </th>
+        <th>
+            Группы
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @{
+                    foreach (Subject subject in item.Subjects)
+                    {
+                        <p style="margin: 0">
+                            <a asp-controller="Subjects" asp-action="Details" asp-route-id="@subject.Id">
+                            @Html.DisplayFor(modelItem => subject.Name)
+                            </a>
+                        </p>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    foreach (Group group in item.Groups)
+                    {
+                        <p style="margin: 0">
+                            <a asp-controller="Groups" asp-action="Details" asp-route-id="@group.Id">
+                            @Html.DisplayFor(modelItem => group.Name)
+                            </a>
+                        </p>
+                    }
+                }
+            </td>
+            <td>
+                <a class="btn btn-dark" asp-action="Details" asp-route-id="@item.Id">Подробнее</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+

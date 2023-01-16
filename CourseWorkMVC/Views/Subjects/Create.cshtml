@@ -1,0 +1,38 @@
+﻿@model CourseWorkMVC.Models.Subject
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Добавить предмет</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="Majors" class="control-label"></label>
+                @foreach (Major major in ViewBag.allMajors)
+                {
+                    <br/>
+                    <input type="checkbox" name="selectedMajors" value="@major.Id"/>
+                    @major.Name
+                }
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Добавить" class="btn btn-dark" />
+                <a class="btn btn-danger" asp-action="Index">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

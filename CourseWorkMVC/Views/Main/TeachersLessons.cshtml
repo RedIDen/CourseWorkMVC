@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CourseWorkMVC.Models.Lesson>
+
+@{
+    string myStyle = string.Empty;
+    DateOnly previous = new DateOnly();
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Расписание преподавателя @ViewBag.Name</h1>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>
+                Дата и время
+            </th>
+            <th>
+                Предмет
+            </th>
+            <th>
+                Аудитория
+            </th>
+            <th>
+                Доп. информация
+            </th>
+            <th>
+                Группы
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var current = new DateOnly(item.DateTime.Year, item.DateTime.Month, item.DateTime.Day);
+            if (current > previous)
+                myStyle = "border-top: solid 3px";
+            else
+                myStyle = string.Empty;
+
+            previous = current;
+
+            <tr style="@myStyle">
+                <td>
+                    @{
+                        var dateTime = item.DateTime.ToString("dd/MM/yyy HH:mm");
+                    }
+                    @Html.DisplayFor(modelItem => dateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Audience)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @{
+                        foreach (Group group in item.Groups)
+                        {
+                            <p style="margin: 0">
+                                    @Html.DisplayFor(modelItem => group.Name)
+                            </p>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

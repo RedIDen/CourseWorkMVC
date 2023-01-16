@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CourseWorkMVC.Models.Mark>
+
+@{
+    string myStyle = string.Empty;
+    DateOnly previous = new DateOnly();
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Мои оценки</h1>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>
+                Дата и время
+            </th>
+            <th>
+                Преподаватель
+            </th>
+            <th>
+                Доп. информация
+            </th>
+            <th>
+                Оценка
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="@myStyle">
+                <td>
+                    @{
+                        var dateTime = item.Lesson.DateTime.ToString("dd/MM/yyy HH:mm");
+                    }
+                    @Html.DisplayFor(modelItem => dateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lesson.Teacher.LastName)
+                    @Html.DisplayFor(modelItem => item.Lesson.Teacher.FirstName)
+                    @Html.DisplayFor(modelItem => item.Lesson.Teacher.SurName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lesson.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

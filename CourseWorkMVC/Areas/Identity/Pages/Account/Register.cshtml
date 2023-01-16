@@ -1,0 +1,62 @@
+﻿@page
+@using CourseWorkMVC.Data
+@model RegisterModel
+@{
+    ViewData["Title"] = "Зарегистрироваться";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-4 mt-3 w-50">
+        <h1>@ViewData["Title"]</h1>
+        <form class="w-100" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div style="display: flex; gap: 15px" class="justify-content-center align-items-center">
+                <div class="w-50">
+                    <div class="form-floating mt-2 w-auto">
+                        <input asp-for="Input.LastName" class="form-control" aria-required="true" />
+                        <label asp-for="Input.LastName"></label>
+                    </div>
+                    <div class="form-floating mt-2 w-auto">
+                        <input asp-for="Input.UserName" class="form-control" aria-required="true" />
+                        <label asp-for="Input.UserName"></label>
+                    </div>
+                    <div class="form-floating mt-2 w-auto">
+                        <input asp-for="Input.SurName" class="form-control" aria-required="true" />
+                        <label asp-for="Input.SurName"></label>
+                    </div>
+                </div>
+                <div class="w-50">
+                    <div class="form-floating mt-2 w-auto">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                        <label asp-for="Input.Email"></label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2 w-auto">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                        <label asp-for="Input.Password"></label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2 w-auto">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="Input.GroupId" class="control-label" style="margin-right: 10px"></label>
+                @Html.DropDownListFor(model => model.Input.GroupId, Model.groups as SelectList)
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-dark mt-3">Зарегистрироваться</button>
+
+            <p class="mt-4 text-center">
+                <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Войти</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

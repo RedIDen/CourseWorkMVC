@@ -1,0 +1,66 @@
+﻿@model CourseWorkMVC.Models.Subject
+
+@{
+    ViewData["Title"] = "Оценки";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Marks", "Groups"))
+{
+    <h4>Изменить оценки группы</h4>
+    <hr/>
+    <div class="row">
+        <div class="col-md-4">
+            @Html.TextBox("Id", Context.GetRouteData().Values["id"], new {@style = "display: none;"})
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <table class="table mt-3">
+                    <thead>
+                    <tr>
+                        <th>
+                        </th>
+                        @foreach (Lesson lesson in ViewBag.AllLessons)
+                        {
+                            <th style="border-left: solid 1px">
+                                @lesson.DateTime.ToString("dd/MM/yyy")
+                                <br/>
+                                @lesson.DateTime.ToString("HH:mm")
+                            </th>
+                        }
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (Account student in ViewBag.AllStudents)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => student.LastName)
+                                @Html.DisplayFor(modelItem => student.FirstName)
+                                @Html.DisplayFor(modelItem => student.SurName)
+                            </td>
+                            @foreach (Lesson lesson in ViewBag.AllLessons)
+                            {
+                                string? value = ((IEnumerable<Mark>) ViewBag.AllMarks).FirstOrDefault(x => x.Account == student && x.Lesson == lesson)?.Value;
+                                <td style="border-left: solid 1px; vertical-align: middle;">
+                                    @Html.TextBox($"{student.Id}.{lesson.Id}", value,
+                                        new {@style = "width: 100%; border-color: white; border-style: none; font-size: 25px; outline: none; text-align: center;"})
+                                </td>
+                            }
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                <div class="form-group mt-3">
+                    <input type="submit" value="Сохранить" class="btn btn-dark"/>
+                    <a class="btn btn-dark" asp-action="Index">Назад к списку</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

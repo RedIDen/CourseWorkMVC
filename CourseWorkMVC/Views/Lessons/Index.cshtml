@@ -1,0 +1,86 @@
+﻿@model IEnumerable<CourseWorkMVC.Models.Lesson>
+
+@{
+    string myStyle = string.Empty;
+    DateOnly previous = new DateOnly();
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ваше расписание</h1>
+
+<div class="mt-3">
+    <a class="btn btn-dark" asp-action="Create">Добавить</a>
+</div>
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>
+                Дата и время
+            </th>
+            <th>
+                Предмет
+            </th>
+            <th>
+                Аудитория
+            </th>
+            <th>
+                Доп. информация
+            </th>
+            <th>
+                Группы
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var current = new DateOnly(item.DateTime.Year, item.DateTime.Month, item.DateTime.Day);
+            if (current > previous)
+                myStyle = "border-top: solid 3px";
+            else
+                myStyle = string.Empty;
+
+            previous = current;
+
+            <tr style="@myStyle">
+                <td>
+                    @{
+                        var dateTime = item.DateTime.ToString("dd/MM/yyy HH:mm");
+                    }
+                    @Html.DisplayFor(modelItem => dateTime)
+                </td>
+                <td>
+                    <a asp-controller="Subjects" asp-action="Details" asp-route-id="@item.Subject.Id">
+                    @Html.DisplayFor(modelItem => item.Subject.Name)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Audience)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @{
+                        foreach (Group group in item.Groups)
+                        {
+                            <p style="margin: 0">
+                                <a asp-controller="Groups" asp-action="Details" asp-route-id="@group.Id">
+                                    @Html.DisplayFor(modelItem => group.Name)
+                                </a>
+                            </p>
+                        }
+                    }
+                </td>
+                <td>
+                    @if (!item.Marks.Any())
+                    {
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    }                
+                    </td>
+            </tr>
+        }
+    </tbody>
+</table>

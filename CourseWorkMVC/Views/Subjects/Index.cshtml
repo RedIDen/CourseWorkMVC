@@ -1,0 +1,51 @@
+﻿@model IEnumerable<CourseWorkMVC.Models.Subject>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Предметы</h1>
+
+<p class="mt-3">
+    <a asp-action="Create" class="btn btn-dark ">Добавить</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Предмет
+            </th>
+            <th>
+                Специальности
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @{
+                        foreach (Major major in item.Majors)
+                        {
+                            <p style="margin: 0">
+                                <a asp-controller="Majors" asp-action="Details" asp-route-id="@major.Id">
+                                    @Html.DisplayFor(modelItem => major.Name)
+                                </a>
+                            </p>
+                        }
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-dark" asp-action="Details" asp-route-id="@item.Id">Подробнее</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
